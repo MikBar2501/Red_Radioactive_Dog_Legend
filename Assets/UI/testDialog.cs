@@ -15,6 +15,6 @@ public class testDialog : MonoBehaviour
     void Update()
     {
         if(Input.GetButtonDown("Esc"))
-            DialoguesDisplayer.Display(TA, "someone");
+            DialoguesDisplayer.Display(TA, "someone", transform);
     }
 }

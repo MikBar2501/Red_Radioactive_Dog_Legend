@@ -7,29 +7,36 @@ public class DialoguesDisplayer : MonoBehaviour
 {
     static DialoguesDisplayer _object;
     public GameObject window;
-    public Text person;
+    public Text personName;
     public Text dialog;
-  //  int currentPart;
+    public Transform player;
+    Transform person;
+    //  int currentPart;
  //   string[] parts; //parts of dialog
 
-    public static void Display(TextAsset text, string person)
+    public static void Display(TextAsset text, string personName, Transform person)
     {
-        _object.Open(text, person);
+        _object.window.SetActive(true);
+        _object.personName.text = personName;
+        _object.person = person;
+        _object.dialog.text = text.text;
     }
 
     public static void Close()
     {
         _object.window.SetActive(false);
     }
-    
-    void Open(TextAsset text, string person)
+
+    public static bool isOpen()
     {
-        window.SetActive(true);
-        this.person.text = person;
-        dialog.text = text.text;
-   //     parts = text.text.Split(';');
-    //    currentPart = 0;
-    //    dialog.text = parts[0];
+        if (_object.window.activeInHierarchy)
+            return true;
+        return false;
+    }
+
+    public static string OpenedBy()
+    {
+        return _object.personName.text;
     }
     
     void Awake()
@@ -42,9 +49,14 @@ public class DialoguesDisplayer : MonoBehaviour
     {
         if(window.activeInHierarchy)
         {
-            if (Input.GetButtonDown("Interaction"))
+            if(person == null)
             {
                 window.SetActive(false);
+                return;
+            }
+            if(Vector3.Distance(player.position, person.position) > 5)
+            {
+                Close();
                 return;
             }
         }
