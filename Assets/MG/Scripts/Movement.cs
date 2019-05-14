@@ -11,12 +11,15 @@ public class Movement : MonoBehaviour
     private Vector3 movementDirection;
     private int layerMask = 0 << 0;
     private float characterHeight;
-    private bool sprintOn = false;
+    private Animator animator;
+
 
     private void Awake()
     {
         objectsRigidbody = GetComponent<Rigidbody>();
         characterHeight = GetComponent<CapsuleCollider>().height/2;
+        animator = GetComponent<Animator>();
+
     }
     private void OnEnable()
     {
@@ -31,15 +34,12 @@ public class Movement : MonoBehaviour
     {
         // When the tank is turned off, set it to kinematic so it stops moving.
         objectsRigidbody.isKinematic = true;
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
         movementDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
     }
     private void FixedUpdate()
     {
@@ -52,19 +52,23 @@ public class Movement : MonoBehaviour
         float actualSpeed = stats.movingSpeed;
         Vector3 movement = new Vector3();
 
-        if (Input.GetButtonDown("Sprint"))
-            sprintOn = true;
-        if (Input.GetButtonUp("Sprint"))
-            sprintOn = false;
-
-        if (sprintOn)
+        if (Input.GetButton("Sprint"))
         {
             actualSpeed *= stats.sprintMultiplayer;
+            animator.SetBool("IsSprinting", true);
+        }
+        else
+        {
+            animator.SetBool("IsSprinting", false);
         }
 
-        if (!onSlope)
+        if (!onSlope && movementDirection.magnitude > 0)
+        {
+            animator.SetBool("IsMoving", true);
             movement = movementDirection * actualSpeed * Time.deltaTime;
- 
+        }
+        else
+            animator.SetBool("IsMoving", false);
 
         // Apply this movement to the rigidbody's position.
         objectsRigidbody.MovePosition(objectsRigidbody.position + movement);
