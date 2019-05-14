@@ -35,6 +35,7 @@ public class ZoneScript : MonoBehaviour
             player = null;
             inZone = false; 
             other.GetComponent<PlayerRadiationSettings>().SetInZone(inZone); 
+            other.GetComponent<PlayerRadiationSettings>().StartRegeneration();
             CancelInvoke("SetDamage");
         } 
     }

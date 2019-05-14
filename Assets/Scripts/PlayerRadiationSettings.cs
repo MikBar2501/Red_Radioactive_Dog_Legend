@@ -24,7 +24,9 @@ public class PlayerRadiationSettings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(nonShieldInZoneCounter == 0 && !inZone) {
+            CancelInvoke("Regeneration");
+        }
     }
 
     public void SetInZone(bool imInZone) {
@@ -70,5 +72,15 @@ public class PlayerRadiationSettings : MonoBehaviour
         Debug.Log("You died, bitch");
     }
 
+    public void Regeneration() {
+        nonShieldInZoneCounter -= 1;
+        if(0 > nonShieldInZoneCounter) {
+            nonShieldInZoneCounter = 0;
+        }
+    }
+
+    public void StartRegeneration() {
+        InvokeRepeating("Regeneration",1f,1f);
+    }
 
 }
