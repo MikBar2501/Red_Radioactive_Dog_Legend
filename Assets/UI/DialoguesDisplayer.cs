@@ -9,21 +9,27 @@ public class DialoguesDisplayer : MonoBehaviour
     public GameObject window;
     public Text person;
     public Text dialog;
-    int currentPart;
-    string[] parts; //parts of dialog
+  //  int currentPart;
+ //   string[] parts; //parts of dialog
 
     public static void Display(TextAsset text, string person)
     {
         _object.Open(text, person);
+    }
+
+    public static void Close()
+    {
+        _object.window.SetActive(false);
     }
     
     void Open(TextAsset text, string person)
     {
         window.SetActive(true);
         this.person.text = person;
-        parts = text.text.Split(';');
-        currentPart = 0;
-        dialog.text = parts[0];
+        dialog.text = text.text;
+   //     parts = text.text.Split(';');
+    //    currentPart = 0;
+    //    dialog.text = parts[0];
     }
     
     void Awake()
@@ -38,13 +44,8 @@ public class DialoguesDisplayer : MonoBehaviour
         {
             if (Input.GetButtonDown("Interaction"))
             {
-                currentPart++;
-                if(currentPart == parts.Length)
-                {
-                    window.SetActive(false);
-                    return;
-                }
-                dialog.text = parts[currentPart];
+                window.SetActive(false);
+                return;
             }
         }
     }
