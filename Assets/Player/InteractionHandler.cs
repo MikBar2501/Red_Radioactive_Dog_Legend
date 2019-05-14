@@ -46,7 +46,7 @@ public class InteractionHandler : MonoBehaviour
                 if (interactables[choosen].CanGather())
                         GetComponent<Animator>().SetTrigger("Gather");
                 if (interactables[choosen].CanTalkWith())
-                    GetComponent<Animator>().SetTrigger("Speak");
+                    GetComponent<Animator>().SetTrigger("Contact");
             }
         }
     }
