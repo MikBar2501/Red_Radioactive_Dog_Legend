@@ -8,11 +8,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class InteractionHandler : MonoBehaviour
 {
+    public static InteractionHandler _object;
     public float Range = 5;
     public List<Interactable> interactables;
 
     void Awake()
     {
+        _object = this;
         interactables = new List<Interactable>();
         GetComponent<SphereCollider>().radius = Range;
     }
@@ -60,5 +62,6 @@ public class InteractionHandler : MonoBehaviour
         if (I != null)
             interactables.Remove(I);
     }
+    
 
 }

@@ -54,7 +54,7 @@ public class DialoguesDisplayer : MonoBehaviour
                 window.SetActive(false);
                 return;
             }
-            if(Vector3.Distance(player.position, person.position) > 5)
+            if(Vector3.Distance(player.position, person.position) > InteractionHandler._object.Range)
             {
                 Close();
                 return;
