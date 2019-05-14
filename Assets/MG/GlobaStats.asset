@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3123cad70fd00e8418e5def4af227409, type: 3}
   m_Name: GlobaStats
   m_EditorClassIdentifier: 
-  movingSpeed: 12
+  movingSpeed: 5
   rotationSpeed: 9
   cameraDampTime: 0.2
   cameraScreenEdgeBuffer: 4

@@ -6,25 +6,31 @@ public class Movement : MonoBehaviour
 {
     public Stats stats;
 
-    private Rigidbody m_Rigidbody;
-    private Vector3 m_Move;
+    private bool onSlope = false;
+    private Rigidbody objectsRigidbody;
+    private Vector3 movementDirection;
+    private int layerMask = 0 << 0;
+    private float characterHeight;
+    private bool sprintOn = false;
 
     private void Awake()
     {
-        m_Rigidbody = GetComponent<Rigidbody>();
+        objectsRigidbody = GetComponent<Rigidbody>();
+        characterHeight = GetComponent<CapsuleCollider>().height/2;
     }
     private void OnEnable()
     {
         // When the tank is turned on, make sure it's not kinematic.
-        m_Rigidbody.isKinematic = false;
+        objectsRigidbody.isKinematic = false;
+        layerMask = ~layerMask;
 
-        m_Move = Vector3.zero;
+        movementDirection = Vector3.zero;
     }
 
     private void OnDisable()
     {
         // When the tank is turned off, set it to kinematic so it stops moving.
-        m_Rigidbody.isKinematic = true;
+        objectsRigidbody.isKinematic = true;
 
 
     }
@@ -32,29 +38,61 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        movementDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
     }
     private void FixedUpdate()
     {
         Move();
         Turn();
+        checkForSlope();
     }
     private void Move()
     {
-        Vector3 movement = m_Move * stats.movingSpeed * Time.deltaTime;
+        float actualSpeed = stats.movingSpeed;
+        Vector3 movement = new Vector3();
 
+        if (Input.GetButtonDown("Sprint"))
+            sprintOn = true;
+        if (Input.GetButtonUp("Sprint"))
+            sprintOn = false;
+
+        if (sprintOn)
+        {
+            actualSpeed *= stats.sprintMultiplayer;
+        }
+
+        if (!onSlope)
+            movement = movementDirection * actualSpeed * Time.deltaTime;
+ 
 
         // Apply this movement to the rigidbody's position.
-        m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+        objectsRigidbody.MovePosition(objectsRigidbody.position + movement);
     }
 
     
     private void Turn()
     { 
-        if(m_Move.magnitude > 0)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_Move), stats.rotationSpeed * Time.deltaTime);
+        if(movementDirection.magnitude > 0)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movementDirection), stats.rotationSpeed * Time.deltaTime);
 
+    }
+
+    public void checkForSlope()
+    {
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(transform.position - new Vector3(0, characterHeight, 0), transform.TransformDirection(Vector3.down), out hit, 1f, layerMask))
+        {
+            Vector3 hitNormal = hit.normal;
+            float angle = Vector3.Angle(Vector3.down, hitNormal);
+
+          //  Debug.DrawRay(transform.position - new Vector3(0, characterHeight, 0), transform.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
+            if (angle < 145)
+                onSlope = true;
+            else
+                onSlope = false;
+        }
     }
 
 }
