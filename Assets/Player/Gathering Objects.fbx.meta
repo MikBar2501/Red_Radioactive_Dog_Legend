@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c50cddcc61443f94d954eb481720bcff
+guid: b08e2062c2eafb340ac8946763422cb6
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -147,7 +147,7 @@ ModelImporter:
     2100002: asdf1_Beta_HighLimbsGeoSG2
     4300000: Beta_Joints
     4300002: Beta_Surface
-    7400000: Idle
+    7400000: Gathering
     9500000: //RootNode
     13700000: Beta_Joints
     13700002: Beta_Surface
@@ -180,10 +180,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle
+      name: Gathering
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 499
+      lastFrame: 179
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
