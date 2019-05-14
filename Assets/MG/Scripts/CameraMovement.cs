@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     public Stats stats;
+
     public Transform mainCharacterRef;
     [HideInInspector] public Transform[] m_Targets; // All the targets the camera needs to encompass.
 
@@ -41,18 +42,18 @@ public class CameraMovement : MonoBehaviour
     }
 
 
+
     private void FindAveragePosition()
     {
         Vector3 averagePos = new Vector3();
         int numTargets = 0;
+
 
         if (mainCharacterRef != null)
         {
             averagePos = mainCharacterRef.transform.position;
             numTargets = 1;
         }
-
-
 
         // Go through all the targets and add their positions together.
         for (int i = 0; i < m_Targets.Length; i++)
@@ -65,6 +66,7 @@ public class CameraMovement : MonoBehaviour
             averagePos += m_Targets[i].position;
             numTargets++;
         }
+
 
         // If there are targets divide the sum of the positions by the number of them to find the average.
         if (numTargets > 0)
@@ -113,6 +115,7 @@ public class CameraMovement : MonoBehaviour
             // Choose the largest out of the current size and the calculated size based on the tank being to the left or right of the camera.
             size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.x) / m_Camera.aspect);
         }
+
 
         // Add the edge buffer to the size.
         size += stats.cameraScreenEdgeBuffer;

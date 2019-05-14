@@ -43,6 +43,10 @@ public class InteractionHandler : MonoBehaviour
             if(choosen != -1)
             {
                 interactables[choosen].Interact();
+                if (interactables[choosen].CanGather())
+                        GetComponent<Animator>().SetTrigger("Gather");
+                if (interactables[choosen].CanTalkWith())
+                    GetComponent<Animator>().SetTrigger("Contact");
             }
         }
     }
