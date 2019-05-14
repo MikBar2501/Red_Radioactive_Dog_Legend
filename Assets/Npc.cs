@@ -17,7 +17,11 @@ public class Npc : Interactable
         else
             DialoguesDisplayer.Display(dialog, NpcName, transform);
     }
-    
+
+    public override bool CanTalkWith()
+    {
+        return true;
+    }
 
 
     void Start()
